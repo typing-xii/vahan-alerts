@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Page not found | Vahan Alerts</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body class="error-page">
+<main class="error-card">
+    <span class="brand-mark" aria-hidden="true">V</span>
+    <p class="eyebrow">ERROR 404</p>
+    <h1>That road doesn't lead anywhere.</h1>
+    <p>The page may have moved, or it may not be part of the project yet.</p>
+    <a class="primary-button" th:href="@{/}">Back to home <span aria-hidden="true">→</span></a>
+</main>
+</body>
+</html>

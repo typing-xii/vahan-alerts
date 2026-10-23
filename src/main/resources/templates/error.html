@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Something went wrong | Vahan Alerts</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body class="error-page">
+<main class="error-card">
+    <span class="brand-mark" aria-hidden="true">V</span>
+    <p class="eyebrow">TEMPORARILY UNAVAILABLE</p>
+    <h1>We hit a bump in the road.</h1>
+    <p>Please try again. No internal error details are displayed here.</p>
+    <a class="primary-button" th:href="@{/}">Back to home <span aria-hidden="true">→</span></a>
+</main>
+</body>
+</html>

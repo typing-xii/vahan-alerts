@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description"
+          content="Keep vehicle documents, maintenance, expenses, and reminders organized with Vahan Alerts.">
+    <title>Vahan Alerts | Stay ahead of every drive</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body>
+<header class="site-header">
+    <a class="brand" th:href="@{/}" aria-label="Vahan Alerts home">
+        <span class="brand-mark" aria-hidden="true">V</span>
+        <span>Vahan<span class="brand-accent">Alerts</span></span>
+    </a>
+    <nav class="main-nav" aria-label="Main navigation">
+        <a th:href="@{/#features}">Dashboard <span class="nav-tag">Soon</span></a>
+        <a th:href="@{/#features}">My Vehicles <span class="nav-tag">Soon</span></a>
+        <a th:href="@{/#features}">Documents <span class="nav-tag">Soon</span></a>
+        <a th:href="@{/#features}">Maintenance <span class="nav-tag">Soon</span></a>
+    </nav>
+    <a class="login-link" th:href="@{/#features}" aria-label="Login (coming soon)">
+        Login <span aria-hidden="true">↗</span>
+    </a>
+</header>
+
+<main>
+    <section class="hero">
+        <div class="hero-copy">
+            <p class="eyebrow"><span class="status-dot"></span> YOUR VEHICLE, WELL LOOKED AFTER</p>
+            <h1>More confidence.<br><span>Fewer things to forget.</span></h1>
+            <p class="hero-description">
+                Keep your vehicle documents, maintenance, expenses, and important dates
+                together in one simple place.
+            </p>
+            <a class="primary-button" th:href="@{/#features}">
+                Explore the project <span aria-hidden="true">→</span>
+            </a>
+            <p class="availability-note">A student project in progress. Account features are coming soon.</p>
+        </div>
+
+        <div class="preview-card" aria-label="Illustration of a future vehicle reminder dashboard">
+            <div class="preview-topline">
+                <div>
+                    <p class="card-kicker">YOUR GARAGE</p>
+                    <h2>A clearer road ahead</h2>
+                </div>
+                <span class="preview-icon" aria-hidden="true">✳</span>
+            </div>
+            <div class="vehicle-preview">
+                <div class="vehicle-icon" aria-hidden="true">↗</div>
+                <div>
+                    <p class="vehicle-name">Your vehicles</p>
+                    <p class="vehicle-detail">Cars, bikes &amp; more</p>
+                </div>
+                <span class="preview-count">01</span>
+            </div>
+            <div class="reminder-preview">
+                <div class="reminder-heading">
+                    <span class="reminder-indicator" aria-hidden="true"></span>
+                    <span>UPCOMING REMINDER</span>
+                </div>
+                <p class="reminder-title">Keep every important date in view</p>
+                <p class="reminder-caption">Documents · Maintenance · Service history</p>
+            </div>
+            <p class="preview-disclaimer">Illustrative preview · features are not live yet</p>
+        </div>
+        <span class="hero-orb orb-one" aria-hidden="true"></span>
+        <span class="hero-orb orb-two" aria-hidden="true"></span>
+    </section>
+
+    <section class="features-section" id="features">
+        <div class="section-heading">
+            <p class="eyebrow">BUILT AROUND YOUR ROUTINE</p>
+            <h2>Everything your vehicle needs,<br>all in one place.</h2>
+        </div>
+        <div class="feature-grid">
+            <article class="feature-card">
+                <span class="feature-icon icon-documents" aria-hidden="true">▤</span>
+                <h3>Document dates</h3>
+                <p>Keep track of important vehicle documents and their due dates.</p>
+                <span class="coming-label">Coming soon</span>
+            </article>
+            <article class="feature-card">
+                <span class="feature-icon icon-maintenance" aria-hidden="true">⌁</span>
+                <h3>Maintenance plans</h3>
+                <p>Organize service tasks and maintenance schedules for each vehicle.</p>
+                <span class="coming-label">Coming soon</span>
+            </article>
+            <article class="feature-card">
+                <span class="feature-icon icon-reminders" aria-hidden="true">◷</span>
+                <h3>Helpful reminders</h3>
+                <p>See upcoming dates and stay informed about your vehicle routine.</p>
+                <span class="coming-label">Coming soon</span>
+            </article>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <a class="brand footer-brand" th:href="@{/}">
+        <span class="brand-mark" aria-hidden="true">V</span>
+        <span>Vahan<span class="brand-accent">Alerts</span></span>
+    </a>
+    <p>Thoughtful vehicle care starts with staying organized.</p>
+    <span class="footer-status"><span class="status-dot"></span> Early build</span>
+</footer>
+</body>
+</html>
