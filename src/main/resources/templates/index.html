@@ -15,14 +15,22 @@
         <span>Vahan<span class="brand-accent">Alerts</span></span>
     </a>
     <nav class="main-nav" aria-label="Main navigation">
-        <a th:href="@{/#features}">Dashboard <span class="nav-tag">Soon</span></a>
-        <a th:href="@{/#features}">My Vehicles <span class="nav-tag">Soon</span></a>
+        <a th:href="@{/account}">Account</a>
+        <a th:if="${currentUser != null}" th:href="@{/vehicles}">My Vehicles</a>
+        <a th:unless="${currentUser != null}" th:href="@{/#features}">My Vehicles <span class="nav-tag">Soon</span></a>
         <a th:href="@{/#features}">Documents <span class="nav-tag">Soon</span></a>
         <a th:href="@{/#features}">Maintenance <span class="nav-tag">Soon</span></a>
     </nav>
-    <a class="login-link" th:href="@{/#features}" aria-label="Login (coming soon)">
-        Login <span aria-hidden="true">↗</span>
-    </a>
+    <div class="header-actions" th:if="${currentUser == null}">
+        <a class="login-link" th:href="@{/login}">Login</a>
+        <a class="register-link" th:href="@{/register}">Create account</a>
+    </div>
+    <div class="header-actions" th:if="${currentUser != null}">
+        <span class="welcome-name" th:text="${currentUser.name}">Name</span>
+        <form th:action="@{/logout}" method="post">
+            <button class="login-link logout-button" type="submit">Log out</button>
+        </form>
+    </div>
 </header>
 
 <main>
@@ -37,7 +45,7 @@
             <a class="primary-button" th:href="@{/#features}">
                 Explore the project <span aria-hidden="true">→</span>
             </a>
-            <p class="availability-note">A student project in progress. Account features are coming soon.</p>
+            <p class="availability-note">Vehicle profiles are live. Document and maintenance reminders are coming soon.</p>
         </div>
 
         <div class="preview-card" aria-label="Illustration of a future vehicle reminder dashboard">
@@ -51,8 +59,8 @@
             <div class="vehicle-preview">
                 <div class="vehicle-icon" aria-hidden="true">↗</div>
                 <div>
-                    <p class="vehicle-name">Your vehicles</p>
-                    <p class="vehicle-detail">Cars, bikes &amp; more</p>
+                    <p class="vehicle-name">Vehicle profiles</p>
+                    <p class="vehicle-detail">Your garage, all in one place</p>
                 </div>
                 <span class="preview-count">01</span>
             </div>

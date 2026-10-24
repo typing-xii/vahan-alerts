@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${document.type.label} + ' | Vahan Alerts'">Document | Vahan Alerts</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body class="auth-page">
+<header class="site-header auth-header">
+    <a class="brand" th:href="@{/}" aria-label="Vahan Alerts home">
+        <span class="brand-mark" aria-hidden="true">V</span>
+        <span>Vahan<span class="brand-accent">Alerts</span></span>
+    </a>
+    <nav class="main-nav" aria-label="Account navigation">
+        <a th:href="@{/account}">Account</a>
+        <a th:href="@{/vehicles}">My Vehicles</a>
+    </nav>
+    <span class="welcome-name" th:text="${currentUser.name}">Name</span>
+</header>
+<main class="page-layout page-layout-narrow">
+    <p class="form-notice success-notice" th:if="${successMessage}" th:text="${successMessage}"></p>
+    <div class="breadcrumb">
+        <a th:href="@{/vehicles/{id}(id=${vehicle.id})}"
+           th:text="${vehicle.nickname != null ? vehicle.nickname : vehicle.registrationNumber}">Vehicle</a>
+        <span aria-hidden="true">/</span>
+        <a th:href="@{/vehicles/{id}/documents(id=${vehicle.id})}">Documents</a>
+        <span aria-hidden="true">/</span>
+        <span th:text="${document.type.label}">Document</span>
+    </div>
+    <section class="vehicle-detail-card">
+        <div class="detail-topline">
+            <div class="vehicle-list-icon" aria-hidden="true">▤</div>
+            <div class="detail-heading">
+                <p class="eyebrow">DOCUMENT DETAILS</p>
+                <h1 th:text="${document.type.label}">Vehicle Insurance</h1>
+                <span class="status-badge"
+                      th:classappend="${' status-' + #strings.toLowerCase(expiryStatus.name())}"
+                      th:text="${expiryStatus.label}"
+                      th:attr="aria-label=${'Expiry status: ' + expiryStatus.label}">Valid</span>
+            </div>
+        </div>
+        <dl class="vehicle-facts">
+            <div>
+                <dt>Vehicle</dt>
+                <dd th:text="${vehicle.nickname != null ? vehicle.nickname : vehicle.registrationNumber}">Vehicle</dd>
+            </div>
+            <div>
+                <dt>Registration</dt>
+                <dd th:text="${vehicle.registrationNumber}">Registration</dd>
+            </div>
+            <div th:if="${document.documentNumber != null}">
+                <dt>Document number</dt>
+                <dd th:text="${document.documentNumber}">Number</dd>
+            </div>
+            <div th:if="${document.issueDate != null}">
+                <dt>Issue date</dt>
+                <dd><time th:datetime="${document.issueDate}"
+                          th:text="${#temporals.format(document.issueDate, 'd MMM yyyy')}">Date</time></dd>
+            </div>
+            <div>
+                <dt>Expiry date</dt>
+                <dd th:if="${document.expiryDate != null}">
+                    <time th:datetime="${document.expiryDate}"
+                          th:text="${#temporals.format(document.expiryDate, 'd MMM yyyy')}">Date</time>
+                </dd>
+                <dd th:if="${document.expiryDate == null}">No expiry date</dd>
+            </div>
+            <div th:if="${document.notes != null}" class="fact-wide">
+                <dt>Notes</dt>
+                <dd class="notes-text" th:text="${document.notes}">Notes</dd>
+            </div>
+            <div th:if="${document.attachmentKey != null}" class="fact-wide">
+                <dt>Attachment</dt>
+                <dd>
+                    <a class="text-link"
+                       th:href="@{/vehicles/{vehicleId}/documents/{documentId}/attachment(vehicleId=${vehicle.id},documentId=${document.id})}">
+                        Download private attachment
+                    </a>
+                </dd>
+            </div>
+        </dl>
+        <div class="detail-actions">
+            <a class="primary-button"
+               th:href="@{/vehicles/{vehicleId}/documents/{documentId}/edit(vehicleId=${vehicle.id},documentId=${document.id})}">Edit document</a>
+            <a class="secondary-button" th:href="@{/vehicles/{id}/documents(id=${vehicle.id})}">All documents</a>
+            <a class="secondary-button" th:href="@{/vehicles/{id}(id=${vehicle.id})}">Vehicle</a>
+            <a class="danger-link"
+               th:href="@{/vehicles/{vehicleId}/documents/{documentId}/delete(vehicleId=${vehicle.id},documentId=${document.id})}">Delete</a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

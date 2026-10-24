@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${vehicle == null ? 'Add a vehicle' : 'Edit vehicle'} + ' | Vahan Alerts'">Vehicle | Vahan Alerts</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body class="auth-page">
+<header class="site-header auth-header">
+    <a class="brand" th:href="@{/}" aria-label="Vahan Alerts home">
+        <span class="brand-mark" aria-hidden="true">V</span>
+        <span>Vahan<span class="brand-accent">Alerts</span></span>
+    </a>
+    <nav class="main-nav" aria-label="Account navigation">
+        <a th:href="@{/account}">Account</a>
+        <a th:href="@{/vehicles}">My Vehicles</a>
+    </nav>
+    <span class="welcome-name" th:text="${currentUser.name}">Name</span>
+</header>
+<main class="page-layout page-layout-narrow">
+    <div class="page-heading compact-heading">
+        <div>
+            <p class="eyebrow">YOUR GARAGE</p>
+            <h1 th:text="${vehicle == null ? 'Add a vehicle' : 'Edit vehicle'}">Add a vehicle</h1>
+            <p class="page-description">Enter the details you want to keep on file.</p>
+        </div>
+    </div>
+    <form class="vehicle-form-card" th:action="${formAction}" th:object="${vehicleForm}" method="post">
+        <div class="form-field">
+            <label for="registrationNumber">Registration number <span class="required-mark">*</span></label>
+            <input id="registrationNumber" th:field="*{registrationNumber}" autocomplete="off"
+                   maxlength="20" placeholder="e.g. KA 01 AB 1234" required>
+            <p class="field-hint">Spaces are removed and letters are saved in uppercase.</p>
+            <p class="field-error" th:if="${#fields.hasErrors('registrationNumber')}"
+               th:errors="*{registrationNumber}"></p>
+        </div>
+        <div class="form-field">
+            <label for="type">Vehicle type <span class="required-mark">*</span></label>
+            <select id="type" th:field="*{type}" required>
+                <option value="">Choose a type</option>
+                <option th:each="type : ${vehicleTypes}" th:value="${type}" th:text="${type.label}">Car</option>
+            </select>
+            <p class="field-error" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></p>
+        </div>
+        <div class="form-field">
+            <label for="nickname">Nickname <span class="optional-label">Optional</span></label>
+            <input id="nickname" th:field="*{nickname}" maxlength="100" placeholder="e.g. Family car">
+            <p class="field-error" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}"></p>
+        </div>
+        <div class="form-row">
+            <div class="form-field">
+                <label for="make">Make / brand <span class="optional-label">Optional</span></label>
+                <input id="make" th:field="*{make}" maxlength="100" placeholder="e.g. Tata">
+                <p class="field-error" th:if="${#fields.hasErrors('make')}" th:errors="*{make}"></p>
+            </div>
+            <div class="form-field">
+                <label for="model">Model <span class="optional-label">Optional</span></label>
+                <input id="model" th:field="*{model}" maxlength="100" placeholder="e.g. Nexon">
+                <p class="field-error" th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></p>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-field">
+                <label for="manufacturingYear">Manufacturing year <span class="optional-label">Optional</span></label>
+                <input id="manufacturingYear" type="number" th:field="*{manufacturingYear}"
+                       min="1886" max="2100" placeholder="e.g. 2022">
+                <p class="field-error" th:if="${#fields.hasErrors('manufacturingYear')}"
+                   th:errors="*{manufacturingYear}"></p>
+            </div>
+            <div class="form-field">
+                <label for="fuelType">Fuel type <span class="optional-label">Optional</span></label>
+                <select id="fuelType" th:field="*{fuelType}">
+                    <option value="">Choose a fuel type</option>
+                    <option th:each="fuel : ${fuelTypes}" th:value="${fuel}" th:text="${fuel.label}">Petrol</option>
+                </select>
+                <p class="field-error" th:if="${#fields.hasErrors('fuelType')}" th:errors="*{fuelType}"></p>
+            </div>
+        </div>
+        <div class="form-field">
+            <label for="notes">Notes <span class="optional-label">Optional</span></label>
+            <textarea id="notes" th:field="*{notes}" maxlength="1000" rows="4"
+                      placeholder="Any extra details you'd like to remember"></textarea>
+            <p class="field-error" th:if="${#fields.hasErrors('notes')}" th:errors="*{notes}"></p>
+        </div>
+        <div class="form-actions">
+            <button class="primary-button" type="submit"
+                    th:text="${vehicle == null ? 'Add vehicle' : 'Save changes'}">Save vehicle</button>
+            <a class="secondary-button" th:href="${vehicle == null ? '/vehicles' : '/vehicles/' + vehicle.id}">Cancel</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

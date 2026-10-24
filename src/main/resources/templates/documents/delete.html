@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Delete document | Vahan Alerts</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body class="auth-page">
+<header class="site-header auth-header">
+    <a class="brand" th:href="@{/}" aria-label="Vahan Alerts home">
+        <span class="brand-mark" aria-hidden="true">V</span>
+        <span>Vahan<span class="brand-accent">Alerts</span></span>
+    </a>
+    <a class="login-link" th:href="@{/vehicles/{id}/documents(id=${vehicle.id})}">Back to documents</a>
+</header>
+<main class="auth-layout">
+    <section class="auth-card delete-card">
+        <p class="eyebrow">CONFIRM ACTION</p>
+        <h1>Delete this document?</h1>
+        <p class="auth-description">
+            This will remove <strong th:text="${document.type.label}">document</strong> for
+            <span th:text="${vehicle.registrationNumber}">registration</span>, including its attachment if present.
+            This action cannot be undone.
+        </p>
+        <form th:action="@{/vehicles/{vehicleId}/documents/{documentId}/delete(vehicleId=${vehicle.id},documentId=${document.id})}"
+              method="post" class="form-actions">
+            <button class="danger-button" type="submit">Yes, delete document</button>
+            <a class="secondary-button"
+               th:href="@{/vehicles/{vehicleId}/documents/{documentId}(vehicleId=${vehicle.id},documentId=${document.id})}">Keep document</a>
+        </form>
+    </section>
+</main>
+</body>
+</html>

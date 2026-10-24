@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${vehicle.registrationNumber} + ' | Vahan Alerts'">Vehicle | Vahan Alerts</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body class="auth-page">
+<header class="site-header auth-header">
+    <a class="brand" th:href="@{/}" aria-label="Vahan Alerts home">
+        <span class="brand-mark" aria-hidden="true">V</span>
+        <span>Vahan<span class="brand-accent">Alerts</span></span>
+    </a>
+    <nav class="main-nav" aria-label="Account navigation">
+        <a th:href="@{/account}">Account</a>
+        <a th:href="@{/vehicles}" aria-current="page">My Vehicles</a>
+    </nav>
+    <div class="header-actions">
+        <span class="welcome-name" th:text="${currentUser.name}">Name</span>
+        <form th:action="@{/logout}" method="post">
+            <button class="login-link logout-button" type="submit">Log out</button>
+        </form>
+    </div>
+</header>
+<main class="page-layout page-layout-narrow">
+    <p class="form-notice success-notice" th:if="${successMessage}" th:text="${successMessage}"></p>
+    <section class="vehicle-detail-card">
+        <div class="detail-topline">
+            <div class="vehicle-list-icon" aria-hidden="true">↗</div>
+            <div class="detail-heading">
+                <p class="eyebrow">VEHICLE DETAILS</p>
+                <h1 th:text="${vehicle.nickname != null ? vehicle.nickname : vehicle.registrationNumber}">Vehicle</h1>
+                <p class="registration-chip" th:text="${vehicle.registrationNumber}">REGISTRATION</p>
+            </div>
+        </div>
+        <dl class="vehicle-facts">
+            <div>
+                <dt>Vehicle type</dt>
+                <dd th:text="${vehicle.type.label}">Car</dd>
+            </div>
+            <div th:if="${vehicle.make != null}">
+                <dt>Make / brand</dt>
+                <dd th:text="${vehicle.make}">Make</dd>
+            </div>
+            <div th:if="${vehicle.model != null}">
+                <dt>Model</dt>
+                <dd th:text="${vehicle.model}">Model</dd>
+            </div>
+            <div th:if="${vehicle.manufacturingYear != null}">
+                <dt>Manufacturing year</dt>
+                <dd th:text="${vehicle.manufacturingYear}">2024</dd>
+            </div>
+            <div th:if="${vehicle.fuelType != null}">
+                <dt>Fuel type</dt>
+                <dd th:text="${vehicle.fuelType.label}">Petrol</dd>
+            </div>
+            <div th:if="${vehicle.notes != null}" class="fact-wide">
+                <dt>Notes</dt>
+                <dd class="notes-text" th:text="${vehicle.notes}">Notes</dd>
+            </div>
+        </dl>
+        <div class="detail-actions">
+            <a class="secondary-button"
+               th:href="@{/vehicles/{vehicleId}/documents(vehicleId=${vehicle.id})}">Documents</a>
+            <a class="primary-button" th:href="@{/vehicles/{id}/edit(id=${vehicle.id})}">Edit vehicle</a>
+            <a class="secondary-button" th:href="@{/vehicles}">All vehicles</a>
+            <a class="danger-link" th:href="@{/vehicles/{id}/delete(id=${vehicle.id})}">Delete</a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

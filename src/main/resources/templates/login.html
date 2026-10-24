@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Log in | Vahan Alerts</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body class="auth-page">
+<header class="site-header auth-header">
+    <a class="brand" th:href="@{/}" aria-label="Vahan Alerts home">
+        <span class="brand-mark" aria-hidden="true">V</span>
+        <span>Vahan<span class="brand-accent">Alerts</span></span>
+    </a>
+    <a class="login-link" th:href="@{/register}">Create account</a>
+</header>
+<main class="auth-layout">
+    <section class="auth-card">
+        <p class="eyebrow">WELCOME BACK</p>
+        <h1>Log in to Vahan Alerts</h1>
+        <p class="auth-description">Use your phone number with country code and password to continue.</p>
+        <p class="form-notice success-notice" th:if="${registered}">Your account is ready. Please log in.</p>
+        <p class="form-notice success-notice" th:if="${param.logout}">You have been logged out.</p>
+        <p class="form-notice error-notice" th:if="${param.error}">Phone number or password is incorrect.</p>
+        <form th:action="@{/login}" method="post" class="auth-form">
+            <div class="form-field">
+                <label for="phoneNumber">Phone number</label>
+                <input id="phoneNumber" type="tel" name="phoneNumber" autocomplete="username"
+                       inputmode="tel" maxlength="24" placeholder="+91 98765 43210" required>
+            </div>
+            <div class="form-field">
+                <label for="password">Password</label>
+                <input id="password" type="password" name="password" autocomplete="current-password" required>
+            </div>
+            <button class="primary-button auth-submit" type="submit">Log in <span aria-hidden="true">→</span></button>
+        </form>
+        <p class="field-hint legacy-account-note">
+            Older email-based accounts do not yet have phone numbers or dates of birth. Contact the project
+            administrator to arrange a secure account update; existing account and vehicle records are retained.
+        </p>
+        <p class="auth-switch">New to Vahan Alerts? <a th:href="@{/register}">Create an account</a></p>
+    </section>
+</main>
+</body>
+</html>

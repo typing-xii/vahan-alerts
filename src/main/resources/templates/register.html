@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create account | Vahan Alerts</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body class="auth-page">
+<header class="site-header auth-header">
+    <a class="brand" th:href="@{/}" aria-label="Vahan Alerts home">
+        <span class="brand-mark" aria-hidden="true">V</span>
+        <span>Vahan<span class="brand-accent">Alerts</span></span>
+    </a>
+    <a class="login-link" th:href="@{/login}">Already registered? Log in</a>
+</header>
+<main class="auth-layout">
+    <section class="auth-card">
+        <p class="eyebrow">GET STARTED</p>
+        <h1>Create your account</h1>
+        <p class="auth-description">Set up a secure account for your vehicle care journey.</p>
+        <form th:action="@{/register}" th:object="${registrationForm}" method="post" class="auth-form">
+            <div class="form-field">
+                <label for="name">Full name</label>
+                <input id="name" th:field="*{name}" autocomplete="name" maxlength="100" required>
+                <p class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+            </div>
+            <div class="form-field">
+                <label for="phoneNumber">Phone number</label>
+                <input id="phoneNumber" type="tel" th:field="*{phoneNumber}" autocomplete="tel"
+                       inputmode="tel" maxlength="24" placeholder="+91 98765 43210" required>
+                <p class="field-hint">Include your country code, for example +91 for India. This does not verify ownership.</p>
+                <p class="field-error" th:if="${#fields.hasErrors('phoneNumber')}"
+                   th:errors="*{phoneNumber}"></p>
+            </div>
+            <div class="form-field">
+                <label for="password">Password</label>
+                <input id="password" type="password" th:field="*{password}" autocomplete="new-password"
+                       minlength="12" maxlength="72" required>
+                <p class="field-hint">Use at least 12 characters.</p>
+                <p class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+            </div>
+            <div class="form-field">
+                <label for="passwordConfirmation">Confirm password</label>
+                <input id="passwordConfirmation" type="password" th:field="*{passwordConfirmation}"
+                       autocomplete="new-password" maxlength="72" required>
+                <p class="field-error" th:if="${#fields.hasErrors('passwordConfirmation')}"
+                   th:errors="*{passwordConfirmation}"></p>
+            </div>
+            <div class="form-field">
+                <label for="dateOfBirth">Date of birth</label>
+                <input id="dateOfBirth" type="date" th:field="*{dateOfBirth}"
+                       autocomplete="bday" required>
+                <p class="field-error" th:if="${#fields.hasErrors('dateOfBirth')}"
+                   th:errors="*{dateOfBirth}"></p>
+            </div>
+            <div class="consent-field">
+                <input id="whatsappReminderConsent" type="checkbox" th:field="*{whatsappReminderConsent}">
+                <label for="whatsappReminderConsent">
+                    I agree to receive future vehicle document-expiry and maintenance reminders through WhatsApp
+                    on this phone number. I can withdraw this consent from my account. Providing a number does not
+                    verify that I own it.
+                </label>
+                <p class="field-error" th:if="${#fields.hasErrors('whatsappReminderConsent')}"
+                   th:errors="*{whatsappReminderConsent}"></p>
+            </div>
+            <button class="primary-button auth-submit" type="submit">Create account <span aria-hidden="true">→</span></button>
+        </form>
+        <p class="auth-switch">Already have an account? <a th:href="@{/login}">Log in</a></p>
+    </section>
+</main>
+</body>
+</html>

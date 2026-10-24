@@ -105,6 +105,724 @@ a {
     color: var(--green-dark);
 }
 
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.register-link {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    padding: 0 15px;
+    border-radius: 8px;
+    background: var(--green);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.register-link:hover {
+    background: var(--green-dark);
+}
+
+.welcome-name {
+    color: var(--green-dark);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.header-actions form,
+.auth-header form {
+    margin: 0;
+}
+
+.logout-button {
+    cursor: pointer;
+    background: transparent;
+    font-family: inherit;
+}
+
+.auth-page {
+    min-height: 100vh;
+    background:
+        radial-gradient(ellipse at 78% 20%, rgba(205, 228, 208, 0.55), transparent 36%),
+        linear-gradient(116deg, #f7faf5 0%, #eef5ee 100%);
+}
+
+.auth-header {
+    background: rgba(251, 252, 249, 0.9);
+}
+
+.auth-layout {
+    display: grid;
+    min-height: calc(100vh - 82px);
+    place-items: center;
+    padding: 48px 24px;
+}
+
+.auth-card {
+    width: min(100%, 460px);
+    padding: 36px;
+    border: 1px solid rgba(224, 234, 224, 0.95);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 22px 55px rgba(42, 74, 52, 0.1);
+}
+
+.auth-card h1 {
+    margin: 0;
+    font-family: Manrope, "Segoe UI", sans-serif;
+    font-size: 29px;
+    font-weight: 800;
+    letter-spacing: -1.2px;
+    line-height: 1.2;
+}
+
+.auth-description {
+    margin: 10px 0 24px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.65;
+}
+
+.auth-form {
+    display: grid;
+    gap: 16px;
+}
+
+.form-field {
+    display: grid;
+    gap: 7px;
+}
+
+.form-field label {
+    color: #34483c;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.form-field input {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid #dce5dc;
+    border-radius: 8px;
+    outline: none;
+    background: #fff;
+    color: var(--ink);
+    font: inherit;
+    font-size: 13px;
+}
+
+.form-field select,
+.form-field textarea {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid #dce5dc;
+    border-radius: 8px;
+    outline: none;
+    background: #fff;
+    color: var(--ink);
+    font: inherit;
+    font-size: 13px;
+}
+
+.form-field textarea {
+    min-height: 104px;
+    resize: vertical;
+}
+
+.form-field input:focus {
+    border-color: #6d9e7a;
+    box-shadow: 0 0 0 3px rgba(109, 158, 122, 0.14);
+}
+
+.form-field select:focus,
+.form-field textarea:focus {
+    border-color: #6d9e7a;
+    box-shadow: 0 0 0 3px rgba(109, 158, 122, 0.14);
+}
+
+.field-hint,
+.field-error {
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.field-hint {
+    color: #89958e;
+}
+
+.field-error,
+.error-notice {
+    color: #a23535;
+}
+
+.consent-field {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    align-items: start;
+    gap: 8px;
+    color: #59685f;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.consent-field input {
+    width: 16px;
+    height: 16px;
+    margin: 2px 0 0;
+    accent-color: var(--green);
+}
+
+.consent-field label {
+    cursor: pointer;
+}
+
+.consent-field .field-error {
+    grid-column: 2;
+}
+
+.legacy-account-note {
+    margin-top: 18px;
+}
+
+.consent-settings {
+    margin: 24px 0;
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #f9fbf8;
+}
+
+.consent-settings h2 {
+    margin: 0;
+    font-family: Manrope, "Segoe UI", sans-serif;
+    font-size: 15px;
+    letter-spacing: -0.3px;
+}
+
+.consent-settings p {
+    margin: 8px 0 14px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.auth-submit {
+    width: 100%;
+    margin-top: 3px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.auth-switch {
+    margin: 20px 0 0;
+    color: var(--muted);
+    font-size: 12px;
+    text-align: center;
+}
+
+.auth-switch a {
+    color: var(--green);
+    font-weight: 700;
+}
+
+.form-notice {
+    margin: 0 0 17px;
+    padding: 11px 13px;
+    border-radius: 8px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.success-notice {
+    background: #eff7ef;
+    color: #2e7044;
+}
+
+.error-notice {
+    background: #fff1ef;
+}
+
+.account-card h1 span {
+    color: var(--green);
+}
+
+.account-card .auth-description strong {
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.account-note {
+    margin: 0 0 22px;
+    padding: 14px;
+    border: 1px solid #e6eee6;
+    border-radius: 9px;
+    background: #f8fbf7;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.account-actions,
+.form-actions,
+.detail-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.secondary-button {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 17px;
+    border: 1px solid #dfe7df;
+    border-radius: 8px;
+    background: #fff;
+    color: var(--green-dark);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.secondary-button:hover {
+    background: #f5f8f4;
+}
+
+.page-layout {
+    width: min(100% - 48px, 1040px);
+    margin: 0 auto;
+    padding: 54px 0 76px;
+}
+
+.page-layout-narrow {
+    max-width: 760px;
+}
+
+.page-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.page-heading .eyebrow {
+    margin-bottom: 9px;
+}
+
+.page-heading h1,
+.vehicle-detail-card h1 {
+    margin: 0;
+    font-family: Manrope, "Segoe UI", sans-serif;
+    font-size: clamp(30px, 4vw, 42px);
+    font-weight: 800;
+    letter-spacing: -1.7px;
+}
+
+.page-description {
+    margin: 9px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.compact-heading {
+    margin-bottom: 20px;
+}
+
+.vehicle-list {
+    display: grid;
+    gap: 12px;
+}
+
+.vehicle-list-card {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 16px;
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 5px 16px rgba(42, 74, 52, 0.035);
+}
+
+.vehicle-list-icon,
+.empty-state-icon {
+    display: grid;
+    width: 46px;
+    height: 46px;
+    flex: 0 0 auto;
+    place-items: center;
+    border-radius: 13px;
+    background: #eef4ee;
+    color: var(--green);
+    font-size: 22px;
+}
+
+.vehicle-list-main {
+    min-width: 0;
+    flex: 1;
+}
+
+.vehicle-list-title {
+    overflow: hidden;
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.vehicle-list-meta {
+    margin: 5px 0 0;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.registration-chip {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    padding: 7px 9px;
+    border: 1px solid #e4eae3;
+    border-radius: 6px;
+    background: #f8faf7;
+    color: #48594e;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.text-link {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 7px;
+    color: var(--green);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.text-link:hover,
+.danger-link:hover {
+    text-decoration: underline;
+}
+
+.empty-state {
+    display: grid;
+    justify-items: center;
+    padding: 54px 24px;
+    border: 1px dashed #d7e1d6;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.65);
+    text-align: center;
+}
+
+.empty-state-icon {
+    width: 54px;
+    height: 54px;
+    margin-bottom: 17px;
+    font-size: 26px;
+}
+
+.empty-state h2 {
+    margin: 0;
+    font-family: Manrope, "Segoe UI", sans-serif;
+    font-size: 20px;
+    letter-spacing: -0.6px;
+}
+
+.empty-state p {
+    max-width: 390px;
+    margin: 9px 0 20px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.vehicle-form-card,
+.vehicle-detail-card {
+    padding: 28px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(42, 74, 52, 0.045);
+}
+
+.vehicle-form-card {
+    display: grid;
+    gap: 18px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.required-mark {
+    color: #a23535;
+}
+
+.optional-label {
+    margin-left: 4px;
+    color: #89958e;
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.form-actions {
+    margin-top: 4px;
+}
+
+.detail-topline {
+    display: flex;
+    align-items: center;
+    gap: 17px;
+    padding-bottom: 23px;
+    border-bottom: 1px solid var(--line);
+}
+
+.detail-topline .vehicle-list-icon {
+    width: 56px;
+    height: 56px;
+    font-size: 27px;
+}
+
+.detail-heading .eyebrow {
+    margin-bottom: 6px;
+}
+
+.vehicle-detail-card h1 {
+    font-size: clamp(24px, 3vw, 32px);
+    letter-spacing: -1px;
+}
+
+.detail-heading .registration-chip {
+    margin-top: 9px;
+}
+
+.vehicle-facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 24px;
+    margin: 24px 0;
+}
+
+.vehicle-facts div {
+    min-width: 0;
+}
+
+.vehicle-facts dt {
+    margin-bottom: 6px;
+    color: #89958e;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.vehicle-facts dd {
+    margin: 0;
+    color: var(--ink);
+    font-size: 13px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.vehicle-facts .fact-wide {
+    grid-column: 1 / -1;
+}
+
+.notes-text {
+    font-weight: 400 !important;
+    line-height: 1.7;
+    white-space: pre-wrap;
+}
+
+.detail-actions {
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+}
+
+.danger-link {
+    margin-left: auto;
+    color: #a23535;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.danger-button {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 17px;
+    border: 0;
+    border-radius: 8px;
+    background: #a23535;
+    color: #fff;
+    cursor: pointer;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.danger-button:hover {
+    background: #852727;
+}
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-bottom: 18px;
+    color: #89958e;
+    font-size: 11px;
+}
+
+.breadcrumb a {
+    color: var(--green);
+    font-weight: 600;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.document-list {
+    display: grid;
+    gap: 12px;
+}
+
+.document-list-card {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 18px;
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 5px 16px rgba(42, 74, 52, 0.035);
+}
+
+.document-list-main {
+    min-width: 0;
+    flex: 1;
+}
+
+.document-title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.document-meta {
+    margin: 6px 0 0;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.document-meta span {
+    color: #48594e;
+    font-weight: 600;
+}
+
+.status-badge {
+    display: inline-flex;
+    min-height: 28px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    border-radius: 99px;
+    background: #edf4ee;
+    color: #2e7044;
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.status-expired {
+    background: #fff0ee;
+    color: #a23535;
+}
+
+.status-expiring_soon {
+    background: #fff6e4;
+    color: #805a11;
+}
+
+.status-valid {
+    background: #edf4ee;
+    color: #2e7044;
+}
+
+.status-no_expiry_date {
+    background: #eef1f3;
+    color: #54636d;
+}
+
+.document-form-card {
+    gap: 18px;
+}
+
+.form-field input[type="file"] {
+    min-height: unset;
+    padding: 9px;
+    background: #fbfcf9;
+}
+
+.existing-attachment {
+    display: grid;
+    justify-items: start;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #f9fbf8;
+}
+
+.remove-attachment {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #59685f;
+    font-size: 11px;
+}
+
+.remove-attachment input {
+    accent-color: var(--green);
+}
+
+.form-error-summary {
+    padding: 12px 14px;
+    border-radius: 8px;
+    background: #fff1ef;
+    color: #a23535;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.form-error-summary p {
+    margin: 0;
+}
+
+.delete-card .auth-description strong {
+    color: var(--ink);
+}
+
 .hero {
     position: relative;
     display: grid;
@@ -505,6 +1223,35 @@ a {
         gap: 10px;
     }
 
+    .header-actions {
+        margin-left: auto;
+    }
+
+    .vehicle-list-card {
+        flex-wrap: wrap;
+    }
+
+    .vehicle-list-main {
+        flex-basis: calc(100% - 65px);
+    }
+
+    .vehicle-list-card .text-link {
+        margin-left: auto;
+    }
+
+    .document-list-card {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .document-list-main {
+        flex-basis: 100%;
+    }
+
+    .document-list-card .text-link {
+        margin-left: auto;
+    }
+
     .hero {
         grid-template-columns: 1fr;
         gap: 42px;
@@ -537,6 +1284,55 @@ a {
 
     .nav-tag {
         display: none;
+    }
+
+    .welcome-name {
+        display: none;
+    }
+
+    .auth-card {
+        padding: 27px 22px;
+    }
+
+    .page-layout {
+        width: min(100% - 32px, 1040px);
+        padding-top: 38px;
+    }
+
+    .page-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .vehicle-form-card,
+    .vehicle-detail-card {
+        padding: 20px;
+    }
+
+    .form-row,
+    .vehicle-facts {
+        grid-template-columns: 1fr;
+    }
+
+    .vehicle-facts .fact-wide {
+        grid-column: auto;
+    }
+
+    .registration-chip {
+        font-size: 9px;
+    }
+
+    .vehicle-list-card {
+        gap: 11px;
+        padding: 14px;
+    }
+
+    .document-list-card {
+        padding: 14px;
+    }
+
+    .vehicle-list-card .registration-chip {
+        margin-left: 57px;
     }
 
     .hero-copy h1 {

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${document == null ? 'Add a document' : 'Edit document'} + ' | Vahan Alerts'">Document | Vahan Alerts</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body class="auth-page">
+<header class="site-header auth-header">
+    <a class="brand" th:href="@{/}" aria-label="Vahan Alerts home">
+        <span class="brand-mark" aria-hidden="true">V</span>
+        <span>Vahan<span class="brand-accent">Alerts</span></span>
+    </a>
+    <nav class="main-nav" aria-label="Account navigation">
+        <a th:href="@{/account}">Account</a>
+        <a th:href="@{/vehicles}">My Vehicles</a>
+    </nav>
+    <span class="welcome-name" th:text="${currentUser.name}">Name</span>
+</header>
+<main class="page-layout page-layout-narrow">
+    <div class="breadcrumb">
+        <a th:href="@{/vehicles/{id}(id=${vehicle.id})}"
+           th:text="${vehicle.nickname != null ? vehicle.nickname : vehicle.registrationNumber}">Vehicle</a>
+        <span aria-hidden="true">/</span>
+        <a th:href="@{/vehicles/{id}/documents(id=${vehicle.id})}">Documents</a>
+        <span aria-hidden="true">/</span>
+        <span th:text="${document == null ? 'Add' : 'Edit'}">Add</span>
+    </div>
+    <section class="page-heading compact-heading">
+        <div>
+            <p class="eyebrow">DOCUMENT FOR <span th:text="${vehicle.registrationNumber}">REGISTRATION</span></p>
+            <h1 th:text="${document == null ? 'Add a document' : 'Edit document'}">Add a document</h1>
+            <p class="page-description">Expiry dates are required for all listed document types except Other.</p>
+        </div>
+    </section>
+    <form class="vehicle-form-card document-form-card" th:action="${formAction}" th:object="${documentForm}"
+          method="post" enctype="multipart/form-data">
+        <div class="form-error-summary" th:if="${#fields.hasGlobalErrors()}" role="alert">
+            <p th:each="error : ${#fields.globalErrors()}" th:text="${error}">Attachment error</p>
+        </div>
+        <div class="form-field">
+            <label for="type">Document type <span class="required-mark">*</span></label>
+            <select id="type" th:field="*{type}" required>
+                <option value="">Choose a document type</option>
+                <option th:each="type : ${documentTypes}" th:value="${type}" th:text="${type.label}">Insurance</option>
+            </select>
+            <p class="field-error" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></p>
+        </div>
+        <div class="form-field">
+            <label for="documentNumber">Document number <span class="optional-label">Optional</span></label>
+            <input id="documentNumber" th:field="*{documentNumber}" maxlength="100" autocomplete="off">
+            <p class="field-error" th:if="${#fields.hasErrors('documentNumber')}"
+               th:errors="*{documentNumber}"></p>
+        </div>
+        <div class="form-row">
+            <div class="form-field">
+                <label for="issueDate">Issue date <span class="optional-label">Optional</span></label>
+                <input id="issueDate" type="date" th:field="*{issueDate}">
+                <p class="field-error" th:if="${#fields.hasErrors('issueDate')}" th:errors="*{issueDate}"></p>
+            </div>
+            <div class="form-field">
+                <label for="expiryDate">Expiry date</label>
+                <input id="expiryDate" type="date" th:field="*{expiryDate}">
+                <p class="field-error" th:if="${#fields.hasErrors('expiryDate')}" th:errors="*{expiryDate}"></p>
+            </div>
+        </div>
+        <div class="form-field">
+            <label for="notes">Notes <span class="optional-label">Optional</span></label>
+            <textarea id="notes" th:field="*{notes}" maxlength="1000" rows="4"></textarea>
+            <p class="field-error" th:if="${#fields.hasErrors('notes')}" th:errors="*{notes}"></p>
+        </div>
+        <div class="form-field">
+            <label for="attachment">Attachment <span class="optional-label">Optional</span></label>
+            <input id="attachment" type="file" name="attachment" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png">
+            <p class="field-hint">PDF, JPEG, or PNG up to the configured size limit (5 MB by default). Files are private and are not displayed as pages.</p>
+            <div class="existing-attachment" th:if="${document != null and document.attachmentKey != null}">
+                <a class="text-link"
+                   th:href="@{/vehicles/{vehicleId}/documents/{documentId}/attachment(vehicleId=${vehicle.id},documentId=${document.id})}">
+                    Download existing attachment
+                </a>
+                <label class="remove-attachment">
+                    <input type="checkbox" th:field="*{removeAttachment}">
+                    Remove existing attachment
+                </label>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button class="primary-button" type="submit"
+                    th:text="${document == null ? 'Add document' : 'Save changes'}">Save document</button>
+            <a class="secondary-button"
+               th:href="${document == null ? '/vehicles/' + vehicle.id + '/documents' :
+                   '/vehicles/' + vehicle.id + '/documents/' + document.id}">Cancel</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

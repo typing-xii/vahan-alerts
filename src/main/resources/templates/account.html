@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Your account | Vahan Alerts</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body class="auth-page">
+<header class="site-header auth-header">
+    <a class="brand" th:href="@{/}" aria-label="Vahan Alerts home">
+        <span class="brand-mark" aria-hidden="true">V</span>
+        <span>Vahan<span class="brand-accent">Alerts</span></span>
+    </a>
+    <form th:action="@{/logout}" method="post">
+        <button class="login-link logout-button" type="submit">Log out</button>
+    </form>
+</header>
+<main class="auth-layout">
+    <section class="auth-card account-card">
+        <p class="eyebrow">YOUR ACCOUNT</p>
+        <h1>Welcome, <span th:text="${currentUser.name}">Name</span></h1>
+        <p class="auth-description">You are signed in with <strong th:text="${currentUser.username}">phone number</strong>.</p>
+        <p class="account-note">Manage your vehicles from your private garage.</p>
+        <p class="form-notice success-notice" th:if="${consentWithdrawn}">
+            WhatsApp reminder consent has been withdrawn. No future proactive reminders should be sent.
+        </p>
+        <section class="consent-settings">
+            <h2>WhatsApp reminders</h2>
+            <p th:if="${account.whatsappReminderConsent}">
+                Consent is active for future vehicle reminders on your phone number.
+            </p>
+            <p th:unless="${account.whatsappReminderConsent}">
+                Consent is not active. Proactive WhatsApp reminders must not be sent.
+            </p>
+            <form th:if="${account.whatsappReminderConsent}"
+                  th:action="@{/account/whatsapp-consent/withdraw}" method="post">
+                <button class="secondary-button" type="submit">Withdraw WhatsApp consent</button>
+            </form>
+        </section>
+        <div class="account-actions">
+            <a class="primary-button" th:href="@{/vehicles}">My vehicles <span aria-hidden="true">→</span></a>
+            <a class="secondary-button" th:href="@{/}">Back to home</a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

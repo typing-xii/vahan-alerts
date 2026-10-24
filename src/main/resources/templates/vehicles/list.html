@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My vehicles | Vahan Alerts</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body class="auth-page">
+<header class="site-header auth-header">
+    <a class="brand" th:href="@{/}" aria-label="Vahan Alerts home">
+        <span class="brand-mark" aria-hidden="true">V</span>
+        <span>Vahan<span class="brand-accent">Alerts</span></span>
+    </a>
+    <nav class="main-nav" aria-label="Account navigation">
+        <a th:href="@{/account}">Account</a>
+        <a th:href="@{/vehicles}" aria-current="page">My Vehicles</a>
+    </nav>
+    <div class="header-actions">
+        <span class="welcome-name" th:text="${currentUser.name}">Name</span>
+        <form th:action="@{/logout}" method="post">
+            <button class="login-link logout-button" type="submit">Log out</button>
+        </form>
+    </div>
+</header>
+<main class="page-layout">
+    <section class="page-heading">
+        <div>
+            <p class="eyebrow">YOUR GARAGE</p>
+            <h1>My vehicles</h1>
+            <p class="page-description">Keep each vehicle's details together in one place.</p>
+        </div>
+        <a class="primary-button" th:href="@{/vehicles/new}">Add a vehicle <span aria-hidden="true">+</span></a>
+    </section>
+
+    <p class="form-notice success-notice" th:if="${successMessage}" th:text="${successMessage}"></p>
+
+    <section class="vehicle-list" th:if="${!vehicles.isEmpty()}" aria-label="Your vehicles">
+        <article class="vehicle-list-card" th:each="vehicle : ${vehicles}">
+            <div class="vehicle-list-icon" aria-hidden="true">↗</div>
+            <div class="vehicle-list-main">
+                <p class="vehicle-list-title"
+                   th:text="${vehicle.nickname != null ? vehicle.nickname : vehicle.registrationNumber}">Vehicle</p>
+                <p class="vehicle-list-meta">
+                    <span th:text="${vehicle.type.label}">Car</span>
+                    <span th:if="${vehicle.make != null}" th:text="${' · ' + vehicle.make}"></span>
+                    <span th:if="${vehicle.model != null}" th:text="${' ' + vehicle.model}"></span>
+                    <span th:if="${vehicle.manufacturingYear != null}"
+                          th:text="${' · ' + vehicle.manufacturingYear}"></span>
+                </p>
+            </div>
+            <span class="registration-chip" th:text="${vehicle.registrationNumber}">REGISTRATION</span>
+            <a class="text-link" th:href="@{/vehicles/{id}(id=${vehicle.id})}"
+               th:aria-label="${'View ' + vehicle.registrationNumber}">View details <span aria-hidden="true">→</span></a>
+        </article>
+    </section>
+
+    <section class="empty-state" th:if="${vehicles.isEmpty()}">
+        <span class="empty-state-icon" aria-hidden="true">↗</span>
+        <h2>Your garage starts here</h2>
+        <p>You haven't added a vehicle yet. Add one to keep its details organized.</p>
+        <a class="primary-button" th:href="@{/vehicles/new}">Add your first vehicle <span aria-hidden="true">+</span></a>
+    </section>
+</main>
+</body>
+</html>

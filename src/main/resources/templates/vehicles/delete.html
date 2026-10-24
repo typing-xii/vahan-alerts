@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Confirm deletion | Vahan Alerts</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body class="auth-page">
+<header class="site-header auth-header">
+    <a class="brand" th:href="@{/}" aria-label="Vahan Alerts home">
+        <span class="brand-mark" aria-hidden="true">V</span>
+        <span>Vahan<span class="brand-accent">Alerts</span></span>
+    </a>
+    <a class="login-link" th:href="@{/vehicles}">Back to vehicles</a>
+</header>
+<main class="auth-layout">
+    <section class="auth-card delete-card">
+        <p class="eyebrow">CONFIRM ACTION</p>
+        <h1>Delete this vehicle?</h1>
+        <p class="auth-description">
+            This will remove <strong th:text="${vehicle.nickname != null ? vehicle.nickname : vehicle.registrationNumber}">vehicle</strong>
+            (<span th:text="${vehicle.registrationNumber}">registration</span>) from your garage.
+            This action cannot be undone.
+        </p>
+        <form th:action="@{/vehicles/{id}/delete(id=${vehicle.id})}" method="post" class="form-actions">
+            <button class="danger-button" type="submit">Yes, delete vehicle</button>
+            <a class="secondary-button" th:href="@{/vehicles/{id}(id=${vehicle.id})}">Keep vehicle</a>
+        </form>
+    </section>
+</main>
+</body>
+</html>
