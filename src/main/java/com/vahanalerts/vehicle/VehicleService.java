@@ -34,6 +34,12 @@ public class VehicleService {
     }
 
     @Transactional
+    public Vehicle findForOwnerForUpdate(Long vehicleId, Long ownerId) {
+        return vehicleRepository.findByIdAndOwner_IdForUpdate(vehicleId, ownerId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    @Transactional
     public Vehicle create(Long ownerId, VehicleForm form) {
         UserAccount owner = userAccountRepository.findById(ownerId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));

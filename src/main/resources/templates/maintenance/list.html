@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Service history | Vahan Alerts</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body class="auth-page">
+<header class="site-header auth-header">
+    <a class="brand" th:href="@{/}" aria-label="Vahan Alerts home">
+        <span class="brand-mark" aria-hidden="true">V</span>
+        <span>Vahan<span class="brand-accent">Alerts</span></span>
+    </a>
+    <nav class="main-nav" aria-label="Account navigation">
+        <a th:href="@{/account}">Account</a>
+        <a th:href="@{/vehicles}">My Vehicles</a>
+        <a th:href="@{/notifications}">Notifications
+            <span class="notification-count" th:if="${unreadNotificationCount > 0}"
+                  th:text="${unreadNotificationCount}">0</span>
+        </a>
+    </nav>
+    <div class="header-actions">
+        <span class="welcome-name" th:text="${currentUser.name}">Name</span>
+        <form th:action="@{/logout}" method="post">
+            <button class="login-link logout-button" type="submit">Log out</button>
+        </form>
+    </div>
+</header>
+<main class="page-layout">
+    <div class="breadcrumb">
+        <a th:href="@{/vehicles}">My vehicles</a>
+        <span aria-hidden="true">/</span>
+        <a th:href="@{/vehicles/{id}(id=${vehicle.id})}"
+           th:text="${vehicle.nickname != null ? vehicle.nickname : vehicle.registrationNumber}">Vehicle</a>
+        <span aria-hidden="true">/</span>
+        <span>Service history</span>
+    </div>
+    <section class="page-heading">
+        <div>
+            <p class="eyebrow">SERVICE HISTORY FOR <span th:text="${vehicle.registrationNumber}">REGISTRATION</span></p>
+            <h1>Maintenance &amp; service</h1>
+            <p class="page-description">A record of work performed and its cost.</p>
+        </div>
+        <a class="primary-button"
+           th:href="@{/vehicles/{id}/maintenance/new(id=${vehicle.id})}">Add service record <span aria-hidden="true">+</span></a>
+    </section>
+
+    <p class="form-notice success-notice" th:if="${successMessage}" th:text="${successMessage}"></p>
+
+    <section class="maintenance-summary" aria-label="Maintenance summary">
+        <article class="summary-card">
+            <p class="summary-label">SERVICE ENTRIES</p>
+            <p class="summary-value" th:text="${summary.serviceCount}">0</p>
+        </article>
+        <article class="summary-card">
+            <p class="summary-label">TOTAL RECORDED COST</p>
+            <p class="summary-value">
+                <span aria-label="Indian rupees">₹</span>
+                <span th:text="${#numbers.formatDecimal(summary.totalCostInr, 1, 'COMMA', 2, 'POINT')}">0.00</span>
+            </p>
+        </article>
+        <article class="summary-card">
+            <p class="summary-label">MOST RECENT SERVICE</p>
+            <p class="summary-value summary-date" th:if="${summary.mostRecentServiceDate != null}">
+                <time th:datetime="${summary.mostRecentServiceDate}"
+                      th:text="${#temporals.format(summary.mostRecentServiceDate, 'd MMM yyyy')}">Date</time>
+            </p>
+            <p class="summary-value summary-empty" th:if="${summary.mostRecentServiceDate == null}">Not recorded</p>
+        </article>
+    </section>
+
+    <section class="maintenance-list" th:if="${!records.isEmpty()}" aria-label="Service records newest first">
+        <article class="maintenance-list-card" th:each="record : ${records}">
+            <div class="maintenance-date-mark" aria-hidden="true">✓</div>
+            <div class="maintenance-list-main">
+                <p class="maintenance-title" th:text="${record.serviceType.label}">General Service</p>
+                <p class="maintenance-meta">
+                    <time th:datetime="${record.serviceDate}"
+                          th:text="${#temporals.format(record.serviceDate, 'd MMM yyyy')}">Date</time>
+                    <span> · </span>
+                    <span th:text="${#numbers.formatInteger(record.odometerKm, 1, 'COMMA')} + ' km'">10,000 km</span>
+                </p>
+                <p class="maintenance-meta" th:if="${record.workshopName != null}"
+                   th:text="${record.workshopName}">Workshop</p>
+            </div>
+            <p class="maintenance-cost">
+                <span aria-label="Indian rupees">₹</span>
+                <span th:text="${#numbers.formatDecimal(record.serviceCostInr, 1, 'COMMA', 2, 'POINT')}">0.00</span>
+            </p>
+            <a class="text-link"
+               th:href="@{/vehicles/{vehicleId}/maintenance/{recordId}(vehicleId=${vehicle.id},recordId=${record.id})}"
+               th:aria-label="${'View ' + record.serviceType.label + ' record'}">View details <span aria-hidden="true">→</span></a>
+        </article>
+    </section>
+
+    <section class="empty-state" th:if="${records.isEmpty()}">
+        <span class="empty-state-icon" aria-hidden="true">✓</span>
+        <h2>No service history yet</h2>
+        <p>Record a service or repair to start tracking this vehicle's maintenance and costs.</p>
+        <a class="primary-button"
+           th:href="@{/vehicles/{id}/maintenance/new(id=${vehicle.id})}">Add the first record <span aria-hidden="true">+</span></a>
+    </section>
+</main>
+</body>
+</html>

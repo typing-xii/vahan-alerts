@@ -46,15 +46,6 @@ public class VehicleDocument {
     @Column(length = 1000)
     private String notes;
 
-    @Column(name = "attachment_key", length = 50)
-    private String attachmentKey;
-
-    @Column(name = "attachment_media_type", length = 32)
-    private String attachmentMediaType;
-
-    @Column(name = "attachment_size")
-    private Long attachmentSize;
-
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
@@ -75,18 +66,6 @@ public class VehicleDocument {
         this.issueDate = form.getIssueDate();
         this.expiryDate = form.getExpiryDate();
         this.notes = trimToNull(form.getNotes());
-    }
-
-    public void setAttachment(String key, String mediaType, long size) {
-        this.attachmentKey = key;
-        this.attachmentMediaType = mediaType;
-        this.attachmentSize = size;
-    }
-
-    public void removeAttachment() {
-        this.attachmentKey = null;
-        this.attachmentMediaType = null;
-        this.attachmentSize = null;
     }
 
     @PrePersist
@@ -134,18 +113,6 @@ public class VehicleDocument {
 
     public String getNotes() {
         return notes;
-    }
-
-    public String getAttachmentKey() {
-        return attachmentKey;
-    }
-
-    public String getAttachmentMediaType() {
-        return attachmentMediaType;
-    }
-
-    public Long getAttachmentSize() {
-        return attachmentSize;
     }
 
     public Instant getCreatedAt() {

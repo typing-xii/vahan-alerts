@@ -15,6 +15,10 @@
     <nav class="main-nav" aria-label="Account navigation">
         <a th:href="@{/account}">Account</a>
         <a th:href="@{/vehicles}" aria-current="page">My Vehicles</a>
+        <a th:href="@{/notifications}">Notifications
+            <span class="notification-count" th:if="${unreadNotificationCount > 0}"
+                  th:text="${unreadNotificationCount}">0</span>
+        </a>
     </nav>
     <div class="header-actions">
         <span class="welcome-name" th:text="${currentUser.name}">Name</span>
@@ -30,7 +34,10 @@
             <h1>My vehicles</h1>
             <p class="page-description">Keep each vehicle's details together in one place.</p>
         </div>
-        <a class="primary-button" th:href="@{/vehicles/new}">Add a vehicle <span aria-hidden="true">+</span></a>
+        <div class="detail-actions">
+            <a class="secondary-button" th:href="@{/documents/new}">Add a document</a>
+            <a class="primary-button" th:href="@{/vehicles/new}">Add a vehicle <span aria-hidden="true">+</span></a>
+        </div>
     </section>
 
     <p class="form-notice success-notice" th:if="${successMessage}" th:text="${successMessage}"></p>

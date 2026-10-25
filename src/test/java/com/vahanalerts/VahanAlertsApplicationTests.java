@@ -28,7 +28,9 @@ class VahanAlertsApplicationTests {
     void homePageRendersVahanAlerts() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Vahan Alerts")));
+                .andExpect(content().string(containsString("Vahan Alerts")))
+                .andExpect(content().string(containsString("href=\"/vehicles\">My Vehicles</a>")))
+                .andExpect(content().string(org.hamcrest.Matchers.not(containsString("class=\"nav-tag\""))));
     }
 
     @Test

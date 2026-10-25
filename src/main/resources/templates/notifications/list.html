@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Notifications | Vahan Alerts</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body class="auth-page">
+<header class="site-header auth-header">
+    <a class="brand" th:href="@{/}" aria-label="Vahan Alerts home">
+        <span class="brand-mark" aria-hidden="true">V</span>
+        <span>Vahan<span class="brand-accent">Alerts</span></span>
+    </a>
+    <nav class="main-nav" aria-label="Account navigation">
+        <a th:href="@{/account}">Account</a>
+        <a th:href="@{/vehicles}">My Vehicles</a>
+        <a th:href="@{/notifications}" aria-current="page">
+            Notifications
+            <span class="notification-count" th:if="${unreadNotificationCount > 0}"
+                  th:text="${unreadNotificationCount}" th:aria-label="${unreadNotificationCount + ' unread'}">0</span>
+        </a>
+    </nav>
+    <div class="header-actions">
+        <span class="welcome-name" th:text="${currentUser.name}">Name</span>
+        <form th:action="@{/logout}" method="post">
+            <button class="login-link logout-button" type="submit">Log out</button>
+        </form>
+    </div>
+</header>
+<main class="page-layout">
+    <div class="breadcrumb">
+        <a th:href="@{/vehicles}">My vehicles</a>
+        <span aria-hidden="true">/</span>
+        <span>Notifications</span>
+    </div>
+    <section class="page-heading">
+        <div>
+            <p class="eyebrow">IN-APP UPDATES</p>
+            <h1>Notifications</h1>
+            <p class="page-description">Document expiry reminders are generated while the application is running. No external messages are sent.</p>
+        </div>
+        <form th:if="${unreadNotificationCount > 0}" th:action="@{/notifications/read-all}" method="post">
+            <button class="secondary-button" type="submit">Mark all as read</button>
+        </form>
+    </section>
+
+    <p class="form-notice success-notice" th:if="${successMessage}" th:text="${successMessage}"></p>
+
+    <section class="notification-list" th:if="${!notifications.isEmpty()}" aria-label="Your notifications">
+        <article class="notification-card" th:each="notification : ${notifications}"
+                 th:classappend="${notification.read ? ' notification-read' : ' notification-unread'}">
+            <div class="notification-card-topline">
+                <span class="notification-state" th:text="${notification.read ? 'Read' : 'Unread'}">Unread</span>
+                <span class="document-meta" th:text="${notification.reminderLabel}">30 days before</span>
+            </div>
+            <h2 th:text="${notification.documentTypeLabel}">Vehicle insurance</h2>
+            <p class="notification-message" th:text="${notification.message}">A document is expiring.</p>
+            <p class="document-meta">
+                Vehicle <span th:text="${notification.registrationNumberSnapshot}">REGISTRATION</span>
+                · Expiry date <span th:text="${notification.expiryDateSnapshot}">2025-01-01</span>
+            </p>
+            <p class="notification-history-note" th:if="${notification.expiryDateChanged}">
+                The document's expiry date has since changed. This reminder preserves the original expiry schedule.
+            </p>
+            <div class="notification-actions">
+                <a class="text-link" th:if="${notification.documentUrl != null}"
+                   th:href="${notification.documentUrl}">View current document <span aria-hidden="true">→</span></a>
+                <form th:if="${!notification.read}"
+                      th:action="@{/notifications/{id}/read(id=${notification.id})}" method="post">
+                    <button class="text-link notification-read-button" type="submit">Mark as read</button>
+                </form>
+            </div>
+        </article>
+    </section>
+
+    <section class="empty-state" th:if="${notifications.isEmpty()}">
+        <span class="empty-state-icon" aria-hidden="true">✓</span>
+        <h2>You're all caught up</h2>
+        <p>Document expiry notifications will appear here when they are due.</p>
+    </section>
+</main>
+</body>
+</html>

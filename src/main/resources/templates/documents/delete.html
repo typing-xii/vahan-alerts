@@ -20,7 +20,7 @@
         <h1>Delete this document?</h1>
         <p class="auth-description">
             This will remove <strong th:text="${document.type.label}">document</strong> for
-            <span th:text="${vehicle.registrationNumber}">registration</span>, including its attachment if present.
+            <span th:text="${vehicle.registrationNumber}">registration</span>.
             This action cannot be undone.
         </p>
         <form th:action="@{/vehicles/{vehicleId}/documents/{documentId}/delete(vehicleId=${vehicle.id},documentId=${document.id})}"

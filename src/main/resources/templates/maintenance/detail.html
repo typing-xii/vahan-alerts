@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${record.serviceType.label} + ' | Service history | Vahan Alerts'">Service | Vahan Alerts</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body class="auth-page">
+<header class="site-header auth-header">
+    <a class="brand" th:href="@{/}" aria-label="Vahan Alerts home">
+        <span class="brand-mark" aria-hidden="true">V</span>
+        <span>Vahan<span class="brand-accent">Alerts</span></span>
+    </a>
+    <nav class="main-nav" aria-label="Account navigation">
+        <a th:href="@{/account}">Account</a>
+        <a th:href="@{/vehicles}">My Vehicles</a>
+        <a th:href="@{/notifications}">Notifications
+            <span class="notification-count" th:if="${unreadNotificationCount > 0}"
+                  th:text="${unreadNotificationCount}">0</span>
+        </a>
+    </nav>
+    <span class="welcome-name" th:text="${currentUser.name}">Name</span>
+</header>
+<main class="page-layout page-layout-narrow">
+    <p class="form-notice success-notice" th:if="${successMessage}" th:text="${successMessage}"></p>
+    <div class="breadcrumb">
+        <a th:href="@{/vehicles/{id}(id=${vehicle.id})}"
+           th:text="${vehicle.nickname != null ? vehicle.nickname : vehicle.registrationNumber}">Vehicle</a>
+        <span aria-hidden="true">/</span>
+        <a th:href="@{/vehicles/{id}/maintenance(id=${vehicle.id})}">Service history</a>
+        <span aria-hidden="true">/</span>
+        <span th:text="${record.serviceType.label}">Service</span>
+    </div>
+    <section class="vehicle-detail-card">
+        <div class="detail-topline">
+            <div class="vehicle-list-icon" aria-hidden="true">✓</div>
+            <div class="detail-heading">
+                <p class="eyebrow">SERVICE RECORD</p>
+                <h1 th:text="${record.serviceType.label}">General Service</h1>
+                <p class="page-description">
+                    <time th:datetime="${record.serviceDate}"
+                          th:text="${#temporals.format(record.serviceDate, 'd MMM yyyy')}">Date</time>
+                </p>
+            </div>
+        </div>
+        <dl class="vehicle-facts">
+            <div>
+                <dt>Vehicle</dt>
+                <dd th:text="${vehicle.nickname != null ? vehicle.nickname : vehicle.registrationNumber}">Vehicle</dd>
+            </div>
+            <div>
+                <dt>Registration</dt>
+                <dd th:text="${vehicle.registrationNumber}">Registration</dd>
+            </div>
+            <div>
+                <dt>Odometer reading</dt>
+                <dd th:text="${#numbers.formatInteger(record.odometerKm, 1, 'COMMA')} + ' km'">0 km</dd>
+            </div>
+            <div>
+                <dt>Service cost</dt>
+                <dd>₹<span th:text="${#numbers.formatDecimal(record.serviceCostInr, 1, 'COMMA', 2, 'POINT')}">0.00</span></dd>
+            </div>
+            <div th:if="${record.workshopName != null}">
+                <dt>Workshop or service centre</dt>
+                <dd th:text="${record.workshopName}">Workshop</dd>
+            </div>
+            <div th:if="${record.description != null}" class="fact-wide">
+                <dt>Description or notes</dt>
+                <dd class="notes-text" th:text="${record.description}">Notes</dd>
+            </div>
+        </dl>
+        <div class="detail-actions">
+            <a class="primary-button"
+               th:href="@{/vehicles/{vehicleId}/maintenance/{recordId}/edit(vehicleId=${vehicle.id},recordId=${record.id})}">Edit record</a>
+            <a class="secondary-button" th:href="@{/vehicles/{id}/maintenance(id=${vehicle.id})}">Service history</a>
+            <a class="secondary-button" th:href="@{/vehicles/{id}(id=${vehicle.id})}">Vehicle</a>
+            <a class="danger-link"
+               th:href="@{/vehicles/{vehicleId}/maintenance/{recordId}/delete(vehicleId=${vehicle.id},recordId=${record.id})}">Delete</a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

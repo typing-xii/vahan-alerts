@@ -12,6 +12,11 @@
         <span class="brand-mark" aria-hidden="true">V</span>
         <span>Vahan<span class="brand-accent">Alerts</span></span>
     </a>
+    <a class="login-link" th:href="@{/notifications}">
+        Notifications
+        <span class="notification-count" th:if="${unreadNotificationCount > 0}"
+              th:text="${unreadNotificationCount}">0</span>
+    </a>
     <form th:action="@{/logout}" method="post">
         <button class="login-link logout-button" type="submit">Log out</button>
     </form>

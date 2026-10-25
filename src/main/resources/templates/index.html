@@ -16,10 +16,12 @@
     </a>
     <nav class="main-nav" aria-label="Main navigation">
         <a th:href="@{/account}">Account</a>
-        <a th:if="${currentUser != null}" th:href="@{/vehicles}">My Vehicles</a>
-        <a th:unless="${currentUser != null}" th:href="@{/#features}">My Vehicles <span class="nav-tag">Soon</span></a>
-        <a th:href="@{/#features}">Documents <span class="nav-tag">Soon</span></a>
-        <a th:href="@{/#features}">Maintenance <span class="nav-tag">Soon</span></a>
+        <a th:href="@{/vehicles}">My Vehicles</a>
+        <a th:if="${currentUser != null}" th:href="@{/notifications}">
+            Notifications
+            <span class="notification-count" th:if="${unreadNotificationCount > 0}"
+                  th:text="${unreadNotificationCount}">0</span>
+        </a>
     </nav>
     <div class="header-actions" th:if="${currentUser == null}">
         <a class="login-link" th:href="@{/login}">Login</a>
@@ -45,10 +47,10 @@
             <a class="primary-button" th:href="@{/#features}">
                 Explore the project <span aria-hidden="true">→</span>
             </a>
-            <p class="availability-note">Vehicle profiles are live. Document and maintenance reminders are coming soon.</p>
+            <p class="availability-note">Vehicle profiles and document expiry notifications are live. Scheduled reminders run only while the application is running.</p>
         </div>
 
-        <div class="preview-card" aria-label="Illustration of a future vehicle reminder dashboard">
+        <div class="preview-card" aria-label="Illustration of a document expiry notification">
             <div class="preview-topline">
                 <div>
                     <p class="card-kicker">YOUR GARAGE</p>
@@ -67,12 +69,12 @@
             <div class="reminder-preview">
                 <div class="reminder-heading">
                     <span class="reminder-indicator" aria-hidden="true"></span>
-                    <span>UPCOMING REMINDER</span>
+                    <span>DOCUMENT EXPIRY</span>
                 </div>
-                <p class="reminder-title">Keep every important date in view</p>
-                <p class="reminder-caption">Documents · Maintenance · Service history</p>
+                <p class="reminder-title">Stay informed before a document expires</p>
+                <p class="reminder-caption">In-app notifications · 30, 7, 1 and 0 days before expiry</p>
             </div>
-            <p class="preview-disclaimer">Illustrative preview · features are not live yet</p>
+            <p class="preview-disclaimer">Illustrative preview · notifications appear in your account</p>
         </div>
         <span class="hero-orb orb-one" aria-hidden="true"></span>
         <span class="hero-orb orb-two" aria-hidden="true"></span>
@@ -88,7 +90,7 @@
                 <span class="feature-icon icon-documents" aria-hidden="true">▤</span>
                 <h3>Document dates</h3>
                 <p>Keep track of important vehicle documents and their due dates.</p>
-                <span class="coming-label">Coming soon</span>
+                <span class="coming-label">Available</span>
             </article>
             <article class="feature-card">
                 <span class="feature-icon icon-maintenance" aria-hidden="true">⌁</span>
@@ -99,8 +101,8 @@
             <article class="feature-card">
                 <span class="feature-icon icon-reminders" aria-hidden="true">◷</span>
                 <h3>Helpful reminders</h3>
-                <p>See upcoming dates and stay informed about your vehicle routine.</p>
-                <span class="coming-label">Coming soon</span>
+                <p>Receive in-app notifications before a vehicle document expires.</p>
+                <span class="coming-label">Available</span>
             </article>
         </div>
     </section>

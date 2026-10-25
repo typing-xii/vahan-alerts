@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Delete service record | Vahan Alerts</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body class="auth-page">
+<header class="site-header auth-header">
+    <a class="brand" th:href="@{/}" aria-label="Vahan Alerts home">
+        <span class="brand-mark" aria-hidden="true">V</span>
+        <span>Vahan<span class="brand-accent">Alerts</span></span>
+    </a>
+    <a class="login-link" th:href="@{/vehicles/{id}/maintenance(id=${vehicle.id})}">Back to service history</a>
+</header>
+<main class="auth-layout">
+    <section class="auth-card delete-card">
+        <p class="eyebrow">CONFIRM ACTION</p>
+        <h1>Delete this service record?</h1>
+        <p class="auth-description">
+            This will remove <strong th:text="${record.serviceType.label}">service</strong>
+            from <span th:text="${vehicle.registrationNumber}">registration</span>'s history.
+            This action cannot be undone.
+        </p>
+        <form th:action="@{/vehicles/{vehicleId}/maintenance/{recordId}/delete(vehicleId=${vehicle.id},recordId=${record.id})}"
+              method="post" class="form-actions">
+            <button class="danger-button" type="submit">Yes, delete record</button>
+            <a class="secondary-button"
+               th:href="@{/vehicles/{vehicleId}/maintenance/{recordId}(vehicleId=${vehicle.id},recordId=${record.id})}">Keep record</a>
+        </form>
+    </section>
+</main>
+</body>
+</html>

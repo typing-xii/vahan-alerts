@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${record == null ? 'Add service record' : 'Edit service record'} + ' | Vahan Alerts'">Service | Vahan Alerts</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body class="auth-page">
+<header class="site-header auth-header">
+    <a class="brand" th:href="@{/}" aria-label="Vahan Alerts home">
+        <span class="brand-mark" aria-hidden="true">V</span>
+        <span>Vahan<span class="brand-accent">Alerts</span></span>
+    </a>
+    <nav class="main-nav" aria-label="Account navigation">
+        <a th:href="@{/account}">Account</a>
+        <a th:href="@{/vehicles}">My Vehicles</a>
+        <a th:href="@{/notifications}">Notifications
+            <span class="notification-count" th:if="${unreadNotificationCount > 0}"
+                  th:text="${unreadNotificationCount}">0</span>
+        </a>
+    </nav>
+    <span class="welcome-name" th:text="${currentUser.name}">Name</span>
+</header>
+<main class="page-layout page-layout-narrow">
+    <div class="breadcrumb">
+        <a th:href="@{/vehicles/{id}(id=${vehicle.id})}"
+           th:text="${vehicle.nickname != null ? vehicle.nickname : vehicle.registrationNumber}">Vehicle</a>
+        <span aria-hidden="true">/</span>
+        <a th:href="@{/vehicles/{id}/maintenance(id=${vehicle.id})}">Service history</a>
+        <span aria-hidden="true">/</span>
+        <span th:text="${record == null ? 'Add' : 'Edit'}">Add</span>
+    </div>
+    <section class="page-heading compact-heading">
+        <div>
+            <p class="eyebrow">SERVICE FOR <span th:text="${vehicle.registrationNumber}">REGISTRATION</span></p>
+            <h1 th:text="${record == null ? 'Add service record' : 'Edit service record'}">Add service record</h1>
+            <p class="page-description">Keep the odometer reading consistent with the vehicle's service timeline.</p>
+        </div>
+    </section>
+    <form class="vehicle-form-card maintenance-form-card" th:action="${formAction}"
+          th:object="${maintenanceForm}" method="post">
+        <div class="form-field">
+            <label for="serviceDate">Service date <span class="required-mark">*</span></label>
+            <input id="serviceDate" type="date" th:field="*{serviceDate}" required>
+            <p class="field-error" th:if="${#fields.hasErrors('serviceDate')}" th:errors="*{serviceDate}"></p>
+        </div>
+        <div class="form-field">
+            <label for="odometerKm">Odometer reading (km) <span class="required-mark">*</span></label>
+            <input id="odometerKm" type="number" th:field="*{odometerKm}" min="0" step="1"
+                   inputmode="numeric" placeholder="e.g. 25000" required>
+            <p class="field-hint">The reading cannot be lower than an earlier service or higher than a later one.</p>
+            <p class="field-error" th:if="${#fields.hasErrors('odometerKm')}" th:errors="*{odometerKm}"></p>
+        </div>
+        <div class="form-field">
+            <label for="serviceType">Service type <span class="required-mark">*</span></label>
+            <select id="serviceType" th:field="*{serviceType}" required>
+                <option value="">Choose a service type</option>
+                <option th:each="type : ${serviceTypes}" th:value="${type}" th:text="${type.label}">General Service</option>
+            </select>
+            <p class="field-error" th:if="${#fields.hasErrors('serviceType')}" th:errors="*{serviceType}"></p>
+        </div>
+        <div class="form-field">
+            <label for="workshopName">Workshop or service centre <span class="optional-label">Optional</span></label>
+            <input id="workshopName" th:field="*{workshopName}" maxlength="150">
+            <p class="field-error" th:if="${#fields.hasErrors('workshopName')}" th:errors="*{workshopName}"></p>
+        </div>
+        <div class="form-field">
+            <label for="serviceCostInr">Service cost (INR) <span class="required-mark">*</span></label>
+            <div class="currency-input">
+                <span aria-hidden="true">₹</span>
+                <input id="serviceCostInr" type="number" th:field="*{serviceCostInr}"
+                       min="0" step="0.01" inputmode="decimal" placeholder="0.00" required>
+            </div>
+            <p class="field-error" th:if="${#fields.hasErrors('serviceCostInr')}"
+               th:errors="*{serviceCostInr}"></p>
+        </div>
+        <div class="form-field">
+            <label for="description">Description or notes <span class="optional-label">Optional</span></label>
+            <textarea id="description" th:field="*{description}" maxlength="2000" rows="4"
+                      placeholder="Work performed, parts replaced, or other details"></textarea>
+            <p class="field-error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></p>
+        </div>
+        <div class="form-actions">
+            <button class="primary-button" type="submit"
+                    th:text="${record == null ? 'Add service record' : 'Save changes'}">Save record</button>
+            <a class="secondary-button"
+               th:href="${record == null ? '/vehicles/' + vehicle.id + '/maintenance' :
+                   '/vehicles/' + vehicle.id + '/maintenance/' + record.id}">Cancel</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

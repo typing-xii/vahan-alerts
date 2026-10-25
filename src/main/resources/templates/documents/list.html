@@ -15,6 +15,10 @@
     <nav class="main-nav" aria-label="Account navigation">
         <a th:href="@{/account}">Account</a>
         <a th:href="@{/vehicles}">My Vehicles</a>
+        <a th:href="@{/notifications}">Notifications
+            <span class="notification-count" th:if="${unreadNotificationCount > 0}"
+                  th:text="${unreadNotificationCount}">0</span>
+        </a>
     </nav>
     <div class="header-actions">
         <span class="welcome-name" th:text="${currentUser.name}">Name</span>
@@ -36,7 +40,7 @@
         <div>
             <p class="eyebrow">DOCUMENTS FOR <span th:text="${vehicle.registrationNumber}">REGISTRATION</span></p>
             <h1>Vehicle documents</h1>
-            <p class="page-description">Keep expiry information and files together for this vehicle.</p>
+            <p class="page-description">Keep manually entered expiry information together for this vehicle.</p>
         </div>
         <a class="primary-button"
            th:href="@{/vehicles/{id}/documents/new(id=${vehicle.id})}">Add a document <span aria-hidden="true">+</span></a>
@@ -48,6 +52,9 @@
         <article class="document-list-card" th:each="item : ${documents}">
             <div class="document-list-main">
                 <p class="document-title" th:text="${item.document.type.label}">Vehicle Insurance</p>
+                <p class="document-meta">
+                    Vehicle registration: <span th:text="${vehicle.registrationNumber}">REGISTRATION</span>
+                </p>
                 <p class="document-meta" th:if="${item.document.documentNumber != null}">
                     Document number: <span th:text="${item.document.documentNumber}">Number</span>
                 </p>

@@ -7,6 +7,9 @@ import jakarta.validation.constraints.Size;
 
 public class DocumentForm {
 
+    @NotNull(message = "Choose a vehicle.")
+    private Long vehicleId;
+
     @NotNull(message = "Choose a document type.")
     private DocumentType type;
 
@@ -20,16 +23,23 @@ public class DocumentForm {
     @Size(max = 1000, message = "Notes must be 1000 characters or fewer.")
     private String notes;
 
-    private boolean removeAttachment;
-
     public static DocumentForm from(VehicleDocument document) {
         DocumentForm form = new DocumentForm();
+        form.vehicleId = document.getVehicle().getId();
         form.type = document.getType();
         form.documentNumber = document.getDocumentNumber();
         form.issueDate = document.getIssueDate();
         form.expiryDate = document.getExpiryDate();
         form.notes = document.getNotes();
         return form;
+    }
+
+    public Long getVehicleId() {
+        return vehicleId;
+    }
+
+    public void setVehicleId(Long vehicleId) {
+        this.vehicleId = vehicleId;
     }
 
     public DocumentType getType() {
@@ -72,11 +82,4 @@ public class DocumentForm {
         this.notes = notes;
     }
 
-    public boolean isRemoveAttachment() {
-        return removeAttachment;
-    }
-
-    public void setRemoveAttachment(boolean removeAttachment) {
-        this.removeAttachment = removeAttachment;
-    }
 }

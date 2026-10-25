@@ -1,25 +1,19 @@
 package com.vahanalerts.controller;
 
 import java.util.List;
+import java.util.Objects;
 
-import com.vahanalerts.document.DocumentAttachmentStorage;
 import com.vahanalerts.document.DocumentExpiryStatusCalculator;
 import com.vahanalerts.document.DocumentForm;
 import com.vahanalerts.document.DocumentListItem;
 import com.vahanalerts.document.DocumentType;
-import com.vahanalerts.document.InvalidDocumentAttachmentException;
 import com.vahanalerts.document.VehicleDocument;
 import com.vahanalerts.document.VehicleDocumentService;
+import com.vahanalerts.notification.DocumentExpiryReminderGenerator;
 import com.vahanalerts.user.VahanUserDetails;
 import com.vahanalerts.vehicle.Vehicle;
 import com.vahanalerts.vehicle.VehicleService;
 import jakarta.validation.Valid;
-import org.springframework.core.io.Resource;
-import org.springframework.http.CacheControl;
-import org.springframework.http.ContentDisposition;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,8 +22,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -38,14 +30,17 @@ public class VehicleDocumentController {
     private final VehicleService vehicleService;
     private final VehicleDocumentService documentService;
     private final DocumentExpiryStatusCalculator statusCalculator;
+    private final DocumentExpiryReminderGenerator reminderGenerator;
 
     public VehicleDocumentController(
             VehicleService vehicleService,
             VehicleDocumentService documentService,
-            DocumentExpiryStatusCalculator statusCalculator) {
+            DocumentExpiryStatusCalculator statusCalculator,
+            DocumentExpiryReminderGenerator reminderGenerator) {
         this.vehicleService = vehicleService;
         this.documentService = documentService;
         this.statusCalculator = statusCalculator;
+        this.reminderGenerator = reminderGenerator;
     }
 
     @GetMapping("/vehicles/{vehicleId}/documents")
@@ -74,29 +69,38 @@ public class VehicleDocumentController {
         return "documents/form";
     }
 
-    @PostMapping("/vehicles/{vehicleId}/documents")
+    @GetMapping("/documents/new")
+    public String createForm(
+            @AuthenticationPrincipal VahanUserDetails user,
+            Model model) {
+        prepareForm(null, user, model, new DocumentForm(), null);
+        return "documents/form";
+    }
+
+    @PostMapping({"/documents", "/vehicles/{vehicleId}/documents"})
     public String create(
-            @PathVariable Long vehicleId,
+            @PathVariable(required = false) Long vehicleId,
             @AuthenticationPrincipal VahanUserDetails user,
             @Valid @ModelAttribute("documentForm") DocumentForm form,
             BindingResult bindingResult,
-            @RequestParam(name = "attachment", required = false) MultipartFile attachment,
             Model model,
             RedirectAttributes redirectAttributes) {
+        if (vehicleId != null) {
+            vehicleService.findForOwner(vehicleId, user.getId());
+        }
+        if (form.getVehicleId() != null) {
+            vehicleService.findForOwner(form.getVehicleId(), user.getId());
+        }
         validateDates(form, bindingResult);
         if (bindingResult.hasErrors()) {
             prepareForm(vehicleId, user, model, form, null);
             return "documents/form";
         }
-        try {
-            VehicleDocument document = documentService.create(vehicleId, user.getId(), form, attachment);
-            redirectAttributes.addFlashAttribute("successMessage", "Document added successfully.");
-            return "redirect:/vehicles/" + vehicleId + "/documents/" + document.getId();
-        } catch (InvalidDocumentAttachmentException exception) {
-            bindingResult.reject("attachment.invalid", exception.getMessage());
-            prepareForm(vehicleId, user, model, form, null);
-            return "documents/form";
-        }
+        Long selectedVehicleId = form.getVehicleId();
+        VehicleDocument document = documentService.create(selectedVehicleId, user.getId(), form);
+        reminderGenerator.generateDueReminders();
+        redirectAttributes.addFlashAttribute("successMessage", "Document added successfully.");
+        return "redirect:/vehicles/" + selectedVehicleId + "/documents/" + document.getId();
     }
 
     @GetMapping("/vehicles/{vehicleId}/documents/{documentId}")
@@ -132,24 +136,22 @@ public class VehicleDocumentController {
             @AuthenticationPrincipal VahanUserDetails user,
             @Valid @ModelAttribute("documentForm") DocumentForm form,
             BindingResult bindingResult,
-            @RequestParam(name = "attachment", required = false) MultipartFile attachment,
             Model model,
             RedirectAttributes redirectAttributes) {
         VehicleDocument document = documentService.findForOwner(vehicleId, documentId, user.getId());
+        if (!Objects.equals(form.getVehicleId(), vehicleId)) {
+            bindingResult.rejectValue("vehicleId", "document.vehicle.immutable",
+                    "A document cannot be moved to another vehicle.");
+        }
         validateDates(form, bindingResult);
         if (bindingResult.hasErrors()) {
             prepareForm(vehicleId, user, model, form, document);
             return "documents/form";
         }
-        try {
-            documentService.update(vehicleId, documentId, user.getId(), form, attachment);
-            redirectAttributes.addFlashAttribute("successMessage", "Document updated successfully.");
-            return "redirect:/vehicles/" + vehicleId + "/documents/" + documentId;
-        } catch (InvalidDocumentAttachmentException exception) {
-            bindingResult.reject("attachment.invalid", exception.getMessage());
-            prepareForm(vehicleId, user, model, form, document);
-            return "documents/form";
-        }
+        documentService.update(vehicleId, documentId, user.getId(), form);
+        reminderGenerator.generateDueReminders();
+        redirectAttributes.addFlashAttribute("successMessage", "Document updated successfully.");
+        return "redirect:/vehicles/" + vehicleId + "/documents/" + documentId;
     }
 
     @GetMapping("/vehicles/{vehicleId}/documents/{documentId}/delete")
@@ -176,35 +178,28 @@ public class VehicleDocumentController {
         return "redirect:/vehicles/" + vehicleId + "/documents";
     }
 
-    @GetMapping("/vehicles/{vehicleId}/documents/{documentId}/attachment")
-    public ResponseEntity<Resource> downloadAttachment(
-            @PathVariable Long vehicleId,
-            @PathVariable Long documentId,
-            @AuthenticationPrincipal VahanUserDetails user) {
-        VehicleDocument document = documentService.findForOwner(vehicleId, documentId, user.getId());
-        Resource attachment = documentService.loadAttachment(vehicleId, documentId, user.getId());
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(document.getAttachmentMediaType()))
-                .contentLength(document.getAttachmentSize())
-                .cacheControl(CacheControl.noStore())
-                .header("X-Content-Type-Options", "nosniff")
-                .header(HttpHeaders.CONTENT_DISPOSITION,
-                        ContentDisposition.attachment().filename("vehicle-document").build().toString())
-                .body(attachment);
-    }
-
     private void prepareForm(
             Long vehicleId,
             VahanUserDetails user,
             Model model,
             DocumentForm form,
             VehicleDocument document) {
-        model.addAttribute("vehicle", vehicleService.findForOwner(vehicleId, user.getId()));
+        List<Vehicle> vehicles = vehicleService.findAllForOwner(user.getId());
+        Vehicle selectedVehicle = vehicleId == null
+                ? null
+                : vehicleService.findForOwner(vehicleId, user.getId());
+        if (form.getVehicleId() == null && selectedVehicle != null) {
+            form.setVehicleId(selectedVehicle.getId());
+        } else if (form.getVehicleId() == null && !vehicles.isEmpty()) {
+            form.setVehicleId(vehicles.get(0).getId());
+        }
+        model.addAttribute("vehicle", selectedVehicle);
+        model.addAttribute("vehicles", vehicles);
         model.addAttribute("document", document);
         model.addAttribute("documentForm", form);
         model.addAttribute("documentTypes", List.of(DocumentType.values()));
         model.addAttribute("formAction", document == null
-                ? "/vehicles/" + vehicleId + "/documents"
+                ? vehicleId == null ? "/documents" : "/vehicles/" + vehicleId + "/documents"
                 : "/vehicles/" + vehicleId + "/documents/" + document.getId());
         model.addAttribute("currentUser", user);
     }
