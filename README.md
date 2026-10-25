@@ -362,7 +362,7 @@ git --version
 Replace `YOUR_USERNAME` with the GitHub account or organization that owns the repository.
 
 ```cmd
-git clone https://github.com/YOUR_USERNAME/Vahan_Alerts.git
+git clone https://github.com/typing-xii/Vahan_Alerts.git
 ```
 
 ### Step 2: Open the Project
